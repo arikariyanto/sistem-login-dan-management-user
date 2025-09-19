@@ -1,55 +1,56 @@
-from user_manager import *
 
-load_users()   
+from user_manager import load_users, tambah_user, login, tampilkan_users, simpan_users, ubah_password, hapus_user
 
-print("="*50)
-print("      SISTEM LOGIN & MANAJEMEN USER     ")
-print("="*50)
+load_users()
 
 while True:
-    print("\nMenu:")
+    print("\n=== MENU UTAMA ===")
     print("1. Tambah User")
     print("2. Login")
     print("3. Lihat Semua User")
     print("4. Keluar")
 
-    pilihan = input("Pilih menu (1-4): ")
+    pilihan = input("Pilih menu: ")
 
     if pilihan == "1":
-        username = input("Masukkan username baru: ")
-        password = input("Masukkan password: ")
-        role = input("Masukkan role (admin/user): ")
-        tambah_user(username, password, role)  
+        nama = input("Masukkan username: ")
+        pw = input("Masukkan password: ")
+        role = input("Masukkan role (admin/editor/viewer): ")
+        tambah_user(nama, pw, role)
 
     elif pilihan == "2":
-        username = input("Masukkan username: ")
-        password = input("Masukkan password: ")
-        role = login(username, password)  
+        nama = input("Masukkan username: ")
+        pw = input("Masukkan password: ")
+        role = login(nama, pw)
+        if role:
+            print(f"Login berhasil sebagai {role}")
+            if role == "admin":
+                while True:
+                    print("\n--- MENU ADMIN ---")
+                    print("1. Lihat semua user")
+                    print("2. Ubah password user")
+                    print("3. Hapus user")
+                    print("4. Kembali")
 
-        if role == "admin":
-            print("\n🔑 Menu Admin:")
-            print("1. Lihat semua user")
-            print("2. Tambah user baru")
-            print("3. Logout")
-
-            admin_pilihan = input("Pilih: ")
-            if admin_pilihan == "1":
-                tampilkan_users()
-            elif admin_pilihan == "2":
-                u = input("Masukkan username: ")
-                p = input("Masukkan password: ")
-                r = input("Masukkan role (admin/user): ")
-                tambah_user(u, p, r)
-            else:
-                print("Logout...")
+                    pilih_admin = input("Pilih: ")
+                    if pilih_admin == "1":
+                        tampilkan_users()
+                    elif pilih_admin == "2":
+                        uname = input("Masukkan username: ")
+                        new_pw = input("Masukkan password baru: ")
+                        ubah_password(uname, new_pw)
+                    elif pilih_admin == "3":
+                        uname = input("Masukkan username: ")
+                        hapus_user(uname)
+                    elif pilih_admin == "4":
+                        break
+        else:
+            print("Login gagal!")
 
     elif pilihan == "3":
         tampilkan_users()
 
     elif pilihan == "4":
-        simpan_users()  
-        print("👋 Keluar dari program. Data tersimpan.")
+        simpan_users()
+        print("Keluar program...")
         break
-
-    else:
-        print("⚠️ Pilihan tidak valid!")
